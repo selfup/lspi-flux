@@ -102,4 +102,20 @@ describe('scoped lspi as state manager for rejs-store', function () {
     assert.equal(this.thoughtStore.storeName, 'thoughts')    
   })
 
+  it('should find matches on a where statement', () => {
+    const ideas = new RejsStore({}, 'ideas')
+
+    ideas.setState([{wow: "ok"}, {wow: "ok"}, {wow: "nope"}])
+
+    const okResult = ideas.whereState('wow', 'ok')
+    const okMatch  = okResult.match
+
+    assert.deepEqual(okMatch, [{wow: "ok"}, {wow: "ok"}])
+
+    const nopeResult = ideas.whereState('wow', 'nope')
+    const nopeMatch  = nopeResult.match
+
+    assert.deepEqual(nopeMatch, [{wow: "nope"}])
+  })
+
 })
