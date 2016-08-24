@@ -1,7 +1,7 @@
 {
   "name": "rejs-store",
   "version": "1.0.0",
-  "description": "Web Worker Based Store",
+  "description": "LocalStorage Based Flux/Store",
   "main": "index.js",
   "scripts": {
     "start": "webpack-dev-server",
