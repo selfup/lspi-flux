@@ -40,17 +40,62 @@ describe('lspi as db for store', function () {
     const currentState = this.scopedStore.fetchState
 
     if (currentState.status) appState.main = currentState.state
+
+    /* for the next if (line 49) */
+    /* handle error and pick to either modify state with old state or keep it as is */
+    /* example below on how to reset state to old state provided by the API if you want to */
+    /* up to you! */
+
     if (!currentState.status) {
-      /* handle error and pick to either modify state with old state or keep it as is */
-      /* example below on how to reset state to old state provided by the API if you want to */
+      alert("Please try again. Something went wrong!")
       appState.main = currentState.state
     }
 
     assert.deepEqual(appState, {main: {"ok": "wow"}})
   })
 
+  it('feels fairly natural to handle an error and maintain previous state', () => {
+    this.scopedStore = new RejsStore({before: "failure"})
+
+    assert.deepEqual(this.scopedStore.mainStore, {before: "failure"})
+
+    const currentState  = this.scopedStore.fetchState.state
+    const appState = {main: currentState}
+
+    assert.deepEqual(appState, {main: {before: "failure"}})
+
+    this.scopedStore.setState({trying: "new change"})
+
+    /* this will pretend to be the false state response from the API */
+    currentState.status = false
+    currentState.state  = {before: "failure"}
+    /* this is jut mocking a response */
+
+    // ************************************************************** //
+    // **** This block will mock how a dev should handle the API **** //
+
+      /* this will not pass - the next `if` is going to be truthy */
+      if (currentState.status) appState.main = currentState.state
+
+      /* handle error and reset state to previous state given by the api */
+      const handleErrorAndResetState = () => {
+        console.error("TEST MOCK RESPONSE: Please try again. Something went wrong!")
+        /* you could throw an alert, or pop up a modal here for a better user experience */
+        /* using console.log for testing purposes only */
+        appState.main = currentState.state
+      }
+
+      /* call handle error function since this `if` statement will pass */
+      if (!currentState.status) handleErrorAndResetState()
+    
+    // **** End of mock block **** //
+    // *************************** //
+
+    assert.deepEqual(appState, {main: {before: "failure"}})
+  })
+
   it('can make multiple stores', () => {
-    this.ideaStore = new RejsStore({"ok": "wow"}, 'ideas')
+    this.ideaStore    = new RejsStore({"ok": "wow"}, 'ideas')
     this.thoughtStore = new RejsStore({"wow": "ok"}, 'thoughts')
 
     assert.equal(this.ideaStore.storeName, 'ideas')
