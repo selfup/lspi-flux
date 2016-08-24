@@ -2,7 +2,7 @@ const chai      = require('chai')
 const assert    = chai.assert
 const RejsStore = require('../lib/main')
 
-describe('lspi as db for store', function () {
+describe('scoped lspi as state manager for rejs-store', function () {
 
   it('should load default state correctly', () => {
     this.scopedStore = new RejsStore()
