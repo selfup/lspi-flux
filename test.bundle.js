@@ -63,27 +63,43 @@
 /* 1 */
 /***/ function(module, exports, __webpack_require__) {
 
-	const Lspi = __webpack_require__(2);
+	'use strict';
 
-	class RejsStore {
-	  constructor(initialState = {}) {
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	var Lspi = __webpack_require__(2);
+
+	var RejsStore = function () {
+	  function RejsStore() {
+	    var initialState = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+
+	    _classCallCheck(this, RejsStore);
+
 	    this.lspi = new Lspi();
 	    this.init(initialState);
 	    this.mainStore = this.fetchState();
 	  }
 
-	  init(initialState) {
-	    const init = this.lspi.setRecord('rejs-store', initialState);
-	    if (init) return init;
-	    return false;
-	  }
+	  _createClass(RejsStore, [{
+	    key: 'init',
+	    value: function init(initialState) {
+	      var init = this.lspi.setRecord('rejs-store', initialState);
+	      if (init) return init;
+	      return false;
+	    }
+	  }, {
+	    key: 'fetchState',
+	    value: function fetchState() {
+	      var state = this.lspi.getRecord('rejs-store');
+	      if (state) return state;
+	      return false;
+	    }
+	  }]);
 
-	  fetchState() {
-	    const state = this.lspi.getRecord('rejs-store');
-	    if (state) return state;
-	    return false;
-	  }
-	}
+	  return RejsStore;
+	}();
 
 	module.exports = RejsStore;
 
@@ -91,142 +107,196 @@
 /* 2 */
 /***/ function(module, exports) {
 
-	const _matchOrNot = Symbol('matchOrNot');
+	'use strict';
 
-	class Lspi {
-	  createEmptyRecordObject(recordName) {
-	    const check = this.getRecord(recordName);
-	    if (check) console.log(`The record: "${ arg }" already exists!`);
-	    if (!check) localStorage.setItem(arg, JSON.stringify({}));
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	var _matchOrNot = Symbol('matchOrNot');
+
+	var Lspi = function () {
+	  function Lspi() {
+	    _classCallCheck(this, Lspi);
 	  }
 
-	  createEmptyRecordObjects() {
-	    Array.from(arguments).forEach(arg => {
-	      const check = this.getRecord(arg);
-	      if (check) console.log(`The record: "${ arg }" already exists!`);
+	  _createClass(Lspi, [{
+	    key: 'createEmptyRecordObject',
+	    value: function createEmptyRecordObject(recordName) {
+	      var check = this.getRecord(recordName);
+	      if (check) console.log('The record: "' + arg + '" already exists!');
 	      if (!check) localStorage.setItem(arg, JSON.stringify({}));
-	    });
-	  }
-
-	  createEmptyRecordArray(recordName) {
-	    const check = this.getRecord(recordName);
-	    if (check) console.log(`The record: "${ recordName }" already exists!`);
-	    if (!check) localStorage.setItem(recordName, JSON.stringify([]));
-	  }
-
-	  createEmptyRecordArrays() {
-	    Array.from(arguments).forEach(arg => {
-	      const check = this.getRecord(arg);
-	      if (check) console.log(`The record: "${ arg }" already exists!`);
-	      if (!check) localStorage.setItem(arg, JSON.stringify([]));
-	    });
-	  }
-
-	  setRecord(recordName, data) {
-	    try {
-	      localStorage.setItem(recordName, JSON.stringify(data));
-	    } catch (error) {
-	      return false;
 	    }
-	  }
+	  }, {
+	    key: 'createEmptyRecordObjects',
+	    value: function createEmptyRecordObjects() {
+	      var _this = this;
 
-	  setRecords(args) {
-	    args.forEach(arg => this.setRecord(arg[0], arg[1]));
-	  }
-
-	  setStringRecord(recordName, string) {
-	    try {
-	      localStorage.setItem(recordName, string);
-	    } catch (error) {
-	      return false;
+	      Array.from(arguments).forEach(function (arg) {
+	        var check = _this.getRecord(arg);
+	        if (check) console.log('The record: "' + arg + '" already exists!');
+	        if (!check) localStorage.setItem(arg, JSON.stringify({}));
+	      });
 	    }
-	  }
-
-	  getRecord(recordName) {
-	    try {
-	      const obj = JSON.parse(localStorage.getItem(recordName));
-	      return obj;
-	    } catch (error) {
-	      return false;
+	  }, {
+	    key: 'createEmptyRecordArray',
+	    value: function createEmptyRecordArray(recordName) {
+	      var check = this.getRecord(recordName);
+	      if (check) console.log('The record: "' + recordName + '" already exists!');
+	      if (!check) localStorage.setItem(recordName, JSON.stringify([]));
 	    }
-	  }
+	  }, {
+	    key: 'createEmptyRecordArrays',
+	    value: function createEmptyRecordArrays() {
+	      var _this2 = this;
 
-	  getRecords() {
-	    return Array.from(arguments).map(arg => this.getRecord(arg));
-	  }
-
-	  where(recordName, key, equals) {
-	    resultArr = [];
-	    this.getRecord(recordName).forEach(record => {
-	      if (record[key] === equals) {
-	        resultArr.push(record);
+	      Array.from(arguments).forEach(function (arg) {
+	        var check = _this2.getRecord(arg);
+	        if (check) console.log('The record: "' + arg + '" already exists!');
+	        if (!check) localStorage.setItem(arg, JSON.stringify([]));
+	      });
+	    }
+	  }, {
+	    key: 'setRecord',
+	    value: function setRecord(recordName, data) {
+	      try {
+	        localStorage.setItem(recordName, JSON.stringify(data));
+	      } catch (error) {
+	        return false;
 	      }
-	    });
-	    if (!resultArr[0]) {
-	      return console.log(`No records match k:'${ key }' with v:"${ equals }"`);
 	    }
-	    return resultArr;
-	  }
+	  }, {
+	    key: 'setRecords',
+	    value: function setRecords(args) {
+	      var _this3 = this;
 
-	  whereEitherOr(recordName, keys, value) {
-	    resultArr = [];
-	    this.getRecord(recordName).forEach(record => {
-	      if (record[key[0]] === equals || record[key[1]] === equals) {
-	        resultArr.push(record);
+	      args.forEach(function (arg) {
+	        return _this3.setRecord(arg[0], arg[1]);
+	      });
+	    }
+	  }, {
+	    key: 'setStringRecord',
+	    value: function setStringRecord(recordName, string) {
+	      try {
+	        localStorage.setItem(recordName, string);
+	      } catch (error) {
+	        return false;
 	      }
-	    });
-	    if (!resultArr[0]) return this[_matchOrNot](key, equals);
-	    return resultArr;
-	  }
+	    }
+	  }, {
+	    key: 'getRecord',
+	    value: function getRecord(recordName) {
+	      try {
+	        var obj = JSON.parse(localStorage.getItem(recordName));
+	        return obj;
+	      } catch (error) {
+	        return false;
+	      }
+	    }
+	  }, {
+	    key: 'getRecords',
+	    value: function getRecords() {
+	      var _this4 = this;
 
-	  arrayWeakMatch(recordName, query) {
-	    const record = this.getRecord(recordName);
-	    let result = [];
-	    record.forEach(el => {
-	      if (query.includes(el)) result.push(el);
-	    });
-	    if (!result[0]) return console.log(`No weak matches for ${ query }`);
-	    return result;
-	  }
+	      return Array.from(arguments).map(function (arg) {
+	        return _this4.getRecord(arg);
+	      });
+	    }
+	  }, {
+	    key: 'where',
+	    value: function where(recordName, key, equals) {
+	      resultArr = [];
+	      this.getRecord(recordName).forEach(function (record) {
+	        if (record[key] === equals) {
+	          resultArr.push(record);
+	        }
+	      });
+	      if (!resultArr[0]) {
+	        return console.log('No records match k:\'' + key + '\' with v:"' + equals + '"');
+	      }
+	      return resultArr;
+	    }
+	  }, {
+	    key: 'whereEitherOr',
+	    value: function whereEitherOr(recordName, keys, value) {
+	      resultArr = [];
+	      this.getRecord(recordName).forEach(function (record) {
+	        if (record[key[0]] === equals || record[key[1]] === equals) {
+	          resultArr.push(record);
+	        }
+	      });
+	      if (!resultArr[0]) return this[_matchOrNot](key, equals);
+	      return resultArr;
+	    }
+	  }, {
+	    key: 'arrayWeakMatch',
+	    value: function arrayWeakMatch(recordName, query) {
+	      var record = this.getRecord(recordName);
+	      var result = [];
+	      record.forEach(function (el) {
+	        if (query.includes(el)) result.push(el);
+	      });
+	      if (!result[0]) return console.log('No weak matches for ' + query);
+	      return result;
+	    }
+	  }, {
+	    key: 'arrayStrongMatch',
+	    value: function arrayStrongMatch(recordName, query) {
+	      var record = this.getRecord(recordName);
+	      var result = [];
+	      record.forEach(function (el) {
+	        if (query === el) result.push(el);
+	      });
+	      if (!result[0]) return console.log('No strong matches for ' + query);
+	      return result;
+	    }
+	  }, {
+	    key: 'getStringRecord',
+	    value: function getStringRecord(recordName) {
+	      var str = localStorage.getItem(recordName);
+	      if (!str) return console.log('The "' + recordName + '" record does not exist!');
+	      return str;
+	    }
+	  }, {
+	    key: 'getStringRecords',
+	    value: function getStringRecords() {
+	      var _this5 = this;
 
-	  arrayStrongMatch(recordName, query) {
-	    const record = this.getRecord(recordName);
-	    let result = [];
-	    record.forEach(el => {
-	      if (query === el) result.push(el);
-	    });
-	    if (!result[0]) return console.log(`No strong matches for ${ query }`);
-	    return result;
-	  }
+	      return Array.from(arguments).map(function (arg) {
+	        return _this5.getRecord(arg);
+	      });
+	    }
+	  }, {
+	    key: 'deleteRecord',
+	    value: function deleteRecord(recordName) {
+	      localStorage.removeItem(recordName);
+	    }
+	  }, {
+	    key: 'deleteRecords',
+	    value: function deleteRecords() {
+	      var _this6 = this;
 
-	  getStringRecord(recordName) {
-	    const str = localStorage.getItem(recordName);
-	    if (!str) return console.log(`The "${ recordName }" record does not exist!`);
-	    return str;
-	  }
+	      Array.from(arguments).forEach(function (arg) {
+	        return _this6.deleteRecord(arg);
+	      });
+	    }
+	  }, {
+	    key: 'dropAll',
+	    value: function dropAll() {
+	      localStorage.clear();
+	    }
 
-	  getStringRecords() {
-	    return Array.from(arguments).map(arg => this.getRecord(arg));
-	  }
+	    // ** private
 
-	  deleteRecord(recordName) {
-	    localStorage.removeItem(recordName);
-	  }
+	  }, {
+	    key: _matchOrNot,
+	    value: function value(key, equals) {
+	      return console.log('No records match k:\'' + key + '\' with v:"' + equals + '"');
+	    }
+	  }]);
 
-	  deleteRecords() {
-	    Array.from(arguments).forEach(arg => this.deleteRecord(arg));
-	  }
-
-	  dropAll() {
-	    localStorage.clear();
-	  }
-
-	  // ** private
-
-	  [_matchOrNot](key, equals) {
-	    return console.log(`No records match k:'${ key }' with v:"${ equals }"`);
-	  }
-	}
+	  return Lspi;
+	}();
 
 	module.exports = Lspi;
 
@@ -518,24 +588,29 @@
 /* 11 */
 /***/ function(module, exports, __webpack_require__) {
 
+	'use strict';
+
 	__webpack_require__(12);
 
 /***/ },
 /* 12 */
 /***/ function(module, exports, __webpack_require__) {
 
-	const chai = __webpack_require__(13);
-	const assert = chai.assert;
-	const RejsStore = __webpack_require__(1);
+	'use strict';
+
+	var chai = __webpack_require__(13);
+	var assert = chai.assert;
+	var RejsStore = __webpack_require__(1);
 
 	describe('lspi as db for store', function () {
+	  var _this = this;
 
-	  beforeEach(() => {
-	    this.store = new RejsStore();
+	  beforeEach(function () {
+	    _this.store = new RejsStore();
 	  });
 
-	  it('should load correctly', () => {
-	    assert.deepEqual(this.store.mainStore, {});
+	  it('should load correctly', function () {
+	    assert.deepEqual(_this.store.mainStore, {});
 	  });
 	});
 
