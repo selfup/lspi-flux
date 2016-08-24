@@ -47,7 +47,7 @@ describe('lspi as db for store', function () {
     /* up to you! */
 
     if (!currentState.status) {
-      alert("Please try again. Something went wrong!")
+      console.error("Please try again. Something went wrong!")
       appState.main = currentState.state
     }
 
