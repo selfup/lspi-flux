@@ -7,6 +7,8 @@ describe('lspi as db for store', function () {
   it('should load default state correctly', () => {
     this.scopedStore = new RejsStore()
 
+    assert.equal(this.scopedStore.storeName, 'rejs-store')
+
     assert.deepEqual(this.scopedStore.setState({}).state, {})
     assert.deepEqual(this.scopedStore.setState({}).status, true)
 
@@ -45,6 +47,14 @@ describe('lspi as db for store', function () {
     }
 
     assert.deepEqual(appState, {main: {"ok": "wow"}})
+  })
+
+  it('can make multiple stores', () => {
+    this.ideaStore = new RejsStore({"ok": "wow"}, 'ideas')
+    this.thoughtStore = new RejsStore({"wow": "ok"}, 'thoughts')
+
+    assert.equal(this.ideaStore.storeName, 'ideas')
+    assert.equal(this.thoughtStore.storeName, 'thoughts')    
   })
 
 })
