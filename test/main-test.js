@@ -14,15 +14,15 @@ describe('lspi as db for store', function () {
 
     assert.deepEqual(this.scopedStore.mainStore, {})
     
-    assert.deepEqual(this.scopedStore.fetchState().state, {})
-    assert.deepEqual(this.scopedStore.fetchState().status, true)
+    assert.deepEqual(this.scopedStore.fetchState.state, {})
+    assert.deepEqual(this.scopedStore.fetchState.status, true)
   })
 
   it('should have truthy status returns', () => {
     this.scopedStore = new RejsStore()
 
     assert.deepEqual(this.scopedStore.setState({}).status, true)
-    assert.deepEqual(this.scopedStore.fetchState().status, true)
+    assert.deepEqual(this.scopedStore.fetchState.status, true)
   })
 
   it('should be able to store valid Object Literals', () => {
@@ -37,7 +37,7 @@ describe('lspi as db for store', function () {
     assert.deepEqual(this.scopedStore.mainStore, {"ok": "wow"})
 
     let appState = {main: {}}
-    const currentState = this.scopedStore.fetchState()
+    const currentState = this.scopedStore.fetchState
 
     if (currentState.status) appState.main = currentState.state
     if (!currentState.status) {
