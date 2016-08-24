@@ -1,5 +1,11 @@
 # Stateful Store
 
+### Setup
+
+```
+npm install
+```
+
 ### To run the tests:
 
 ```
