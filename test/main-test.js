@@ -2,12 +2,12 @@ const chai      = require('chai')
 const assert    = chai.assert
 const RejsStore = require('../lib/main')
 
-describe('scoped lspi as state manager for rejs-store', function () {
+describe('scoped lspi as state manager for lspi-flux', function () {
 
   it('should load default state correctly', () => {
     this.scopedStore = new RejsStore()
 
-    assert.equal(this.scopedStore.storeName, 'rejs-store')
+    assert.equal(this.scopedStore.storeName, 'lspi-flux')
 
     assert.deepEqual(this.scopedStore.setState({}).state, {})
     assert.deepEqual(this.scopedStore.setState({}).status, true)

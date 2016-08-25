@@ -1,5 +1,5 @@
 {
-  "name": "rejs-store",
+  "name": "lspi-flux",
   "version": "1.0.0",
   "description": "LocalStorage Based Flux/Store",
   "main": "index.js",
@@ -9,14 +9,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/selfup/rejs-store.git"
+    "url": "https://github.com/selfup/lspi-flux.git"
   },
   "author": "selfup",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/selfup/rejs-store"
+    "url": "https://github.com/selfup/lspi-flux"
   },
-  "homepage": "https://github.com/selfup/rejs-store",
+  "homepage": "https://github.com/selfup/lspi-flux",
   "devDependencies": {
     "babel": "^6.5.2",
     "babel-core": "^6.13.2",

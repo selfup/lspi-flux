@@ -85,14 +85,14 @@
 	  _createClass(RejsStore, [{
 	    key: 'init',
 	    value: function init(initialState) {
-	      var init = this.lspi.setRecord('rejs-store', initialState);
+	      var init = this.lspi.setRecord('lspi-flux', initialState);
 	      if (init) return init;
 	      return false;
 	    }
 	  }, {
 	    key: 'fetchState',
 	    value: function fetchState() {
-	      var state = this.lspi.getRecord('rejs-store');
+	      var state = this.lspi.getRecord('lspi-flux');
 	      if (state) return state;
 	      return false;
 	    }
@@ -324,8 +324,8 @@
 	// Hot Module Replacement
 	if(false) {
 		// When the styles change, update the <style> tags
-		module.hot.accept("!!/Users/RJPB2/Documents/rejs-store/node_modules/css-loader/index.js!/Users/RJPB2/Documents/rejs-store/node_modules/mocha/mocha.css", function() {
-			var newContent = require("!!/Users/RJPB2/Documents/rejs-store/node_modules/css-loader/index.js!/Users/RJPB2/Documents/rejs-store/node_modules/mocha/mocha.css");
+		module.hot.accept("!!/Users/RJPB2/Documents/lspi-flux/node_modules/css-loader/index.js!/Users/RJPB2/Documents/lspi-flux/node_modules/mocha/mocha.css", function() {
+			var newContent = require("!!/Users/RJPB2/Documents/lspi-flux/node_modules/css-loader/index.js!/Users/RJPB2/Documents/lspi-flux/node_modules/mocha/mocha.css");
 			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 			update(newContent);
 		});

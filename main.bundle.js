@@ -74,14 +74,14 @@
 	  _createClass(RejsStore, [{
 	    key: 'init',
 	    value: function init(initialState) {
-	      var init = this.lspi.setRecord('rejs-store', initialState);
+	      var init = this.lspi.setRecord('lspi-flux', initialState);
 	      if (init) return init;
 	      return false;
 	    }
 	  }, {
 	    key: 'fetchState',
 	    value: function fetchState() {
-	      var state = this.lspi.getRecord('rejs-store');
+	      var state = this.lspi.getRecord('lspi-flux');
 	      if (state) return state;
 	      return false;
 	    }
