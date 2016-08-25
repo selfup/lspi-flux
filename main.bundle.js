@@ -60,18 +60,18 @@
 
 	var Lspi = __webpack_require__(2);
 
-	var RejsStore = function () {
-	  function RejsStore() {
+	var LspiFlux = function () {
+	  function LspiFlux() {
 	    var initialState = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 
-	    _classCallCheck(this, RejsStore);
+	    _classCallCheck(this, LspiFlux);
 
 	    this.lspi = new Lspi();
 	    this.init(initialState);
 	    this.mainStore = this.fetchState();
 	  }
 
-	  _createClass(RejsStore, [{
+	  _createClass(LspiFlux, [{
 	    key: 'init',
 	    value: function init(initialState) {
 	      var init = this.lspi.setRecord('lspi-flux', initialState);
@@ -87,10 +87,10 @@
 	    }
 	  }]);
 
-	  return RejsStore;
+	  return LspiFlux;
 	}();
 
-	module.exports = RejsStore;
+	module.exports = LspiFlux;
 
 /***/ },
 /* 2 */

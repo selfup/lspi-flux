@@ -1,11 +1,11 @@
 const chai      = require('chai')
 const assert    = chai.assert
-const RejsStore = require('../lib/main')
+const LspiFlux = require('../lib/main')
 
 describe('scoped lspi as state manager for lspi-flux', function () {
 
   it('should load default state correctly', () => {
-    this.scopedStore = new RejsStore()
+    this.scopedStore = new LspiFlux()
 
     assert.equal(this.scopedStore.storeName, 'lspi-flux')
 
@@ -19,20 +19,20 @@ describe('scoped lspi as state manager for lspi-flux', function () {
   })
 
   it('should have truthy status returns', () => {
-    this.scopedStore = new RejsStore()
+    this.scopedStore = new LspiFlux()
 
     assert.deepEqual(this.scopedStore.setState({}).status, true)
     assert.deepEqual(this.scopedStore.fetchState.status, true)
   })
 
   it('should be able to store valid Object Literals', () => {
-    this.scopedStore = new RejsStore({"ok": "wow"})
+    this.scopedStore = new LspiFlux({"ok": "wow"})
 
     assert.deepEqual(this.scopedStore.mainStore, {"ok": "wow"})
   })
 
   it('feels fairly natural to use the API', () => {
-    this.scopedStore = new RejsStore({"ok": "wow"})
+    this.scopedStore = new LspiFlux({"ok": "wow"})
 
     assert.deepEqual(this.scopedStore.mainStore, {"ok": "wow"})
 
@@ -55,7 +55,7 @@ describe('scoped lspi as state manager for lspi-flux', function () {
   })
 
   it('feels fairly natural to handle an error and maintain previous state', () => {
-    this.scopedStore = new RejsStore({before: "failure"})
+    this.scopedStore = new LspiFlux({before: "failure"})
 
     assert.deepEqual(this.scopedStore.mainStore, {before: "failure"})
 
@@ -95,15 +95,15 @@ describe('scoped lspi as state manager for lspi-flux', function () {
   })
 
   it('can make multiple stores', () => {
-    this.ideaStore    = new RejsStore({"ok": "wow"}, 'ideas')
-    this.thoughtStore = new RejsStore({"wow": "ok"}, 'thoughts')
+    this.ideaStore    = new LspiFlux({"ok": "wow"}, 'ideas')
+    this.thoughtStore = new LspiFlux({"wow": "ok"}, 'thoughts')
 
     assert.equal(this.ideaStore.storeName, 'ideas')
     assert.equal(this.thoughtStore.storeName, 'thoughts')    
   })
 
   it('should find matches on a where statement', () => {
-    const ideas = new RejsStore({}, 'ideas')
+    const ideas = new LspiFlux({}, 'ideas')
 
     ideas.setState([{wow: "ok"}, {wow: "ok"}, {wow: "nope"}])
 
