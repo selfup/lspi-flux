@@ -64,6 +64,10 @@ nopeResult.match // [{wow: "nope"}]
 // Enjoy!
 ```
 
+### Current tests
+
+![](http://i.imgur.com/CeCNnJK.png)
+
 ### Contributor Setup
 
 Go to either: https://github.com/selfup/lspi-flux
