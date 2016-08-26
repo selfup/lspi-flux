@@ -31,5 +31,13 @@
     "sinon": "^1.17.5",
     "webpack": "^1.13.2",
     "webpack-dev-server": "^1.15.0"
-  }
+  },
+  "keywords": [
+    "flux",
+    "redux",
+    "localStorage",
+    "local storage",
+    "selfup",
+    "rejs"
+  ]
 }
