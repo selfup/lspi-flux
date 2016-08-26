@@ -2,7 +2,7 @@
   "name": "lspi-flux",
   "version": "1.0.0",
   "description": "LocalStorage Based Flux/Store",
-  "main": "index.js",
+  "main": "main.bundle.js",
   "scripts": {
     "start": "webpack-dev-server",
     "build": "webpack"
