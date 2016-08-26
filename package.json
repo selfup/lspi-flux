@@ -1,6 +1,6 @@
 {
   "name": "lspi-flux",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "LocalStorage Based Flux/Store",
   "main": "main.bundle.js",
   "scripts": {
