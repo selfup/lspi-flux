@@ -71,7 +71,10 @@ nopeResult.match // [{wow: "nope"}]
 ### Contributor Setup
 
 Go to either: https://github.com/selfup/lspi-flux
+
 Or:           https://gitlab.com/selfup/lspi-flux
+
+*Clone one of them and:*
 
 ```
 npm install
