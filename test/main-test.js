@@ -13,7 +13,7 @@ describe('scoped lspi as state manager for lspi-flux', function () {
     assert.deepEqual(this.scopedStore.setState({}).status, true)
 
     assert.deepEqual(this.scopedStore.mainStore, {})
-    
+
     assert.deepEqual(this.scopedStore.fetchState.state, {})
     assert.deepEqual(this.scopedStore.fetchState.status, true)
   })
@@ -87,7 +87,7 @@ describe('scoped lspi as state manager for lspi-flux', function () {
 
       /* call handle error function since this `if` statement will pass */
       if (!currentState.status) handleErrorAndResetState()
-    
+
     // **** End of mock block **** //
     // *************************** //
 
@@ -99,7 +99,7 @@ describe('scoped lspi as state manager for lspi-flux', function () {
     this.thoughtStore = new LspiFlux({"wow": "ok"}, 'thoughts')
 
     assert.equal(this.ideaStore.storeName, 'ideas')
-    assert.equal(this.thoughtStore.storeName, 'thoughts')    
+    assert.equal(this.thoughtStore.storeName, 'thoughts')
   })
 
   it('should find matches on a where statement', () => {
