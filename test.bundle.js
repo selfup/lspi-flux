@@ -63,38 +63,50 @@
 /* 1 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
+	"use strict";
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-	var Lspi = __webpack_require__(2);
+	var ScopedLspi = __webpack_require__(2);
 
 	var LspiFlux = function () {
 	  function LspiFlux() {
 	    var initialState = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+	    var storeName = arguments.length <= 1 || arguments[1] === undefined ? 'lspi-flux' : arguments[1];
 
 	    _classCallCheck(this, LspiFlux);
 
-	    this.lspi = new Lspi();
-	    this.init(initialState);
-	    this.mainStore = this.fetchState();
+	    this.storeName = storeName;
+	    this.lspi = new ScopedLspi();
+	    this.setState(initialState);
+	    this.mainStore = this.fetchState.state;
 	  }
 
 	  _createClass(LspiFlux, [{
-	    key: 'init',
-	    value: function init(initialState) {
-	      var init = this.lspi.setRecord('lspi-flux', initialState);
-	      if (init) return init;
-	      return false;
+	    key: "setState",
+	    value: function setState(state) {
+	      var init = this.lspi.setRecord(this.storeName, state);
+	      if (init === undefined) {
+	        this.mainStore = this.fetchState.state;
+	        return { status: true, state: this.mainStore };
+	      }
+	      return { status: false, state: this.mainStore };
 	    }
 	  }, {
-	    key: 'fetchState',
-	    value: function fetchState() {
-	      var state = this.lspi.getRecord('lspi-flux');
-	      if (state) return state;
-	      return false;
+	    key: "whereState",
+	    value: function whereState(key, equals) {
+	      var whereMatch = this.lspi.where(this.storeName, key, equals);
+	      if (whereMatch) return { status: true, match: whereMatch };
+	      return { status: false, match: whereMatch };
+	    }
+	  }, {
+	    key: "fetchState",
+	    get: function get() {
+	      var state = this.lspi.getRecord(this.storeName);
+	      if (state) return { status: true, state: state };
+	      return { status: false, state: this.mainStore };
 	    }
 	  }]);
 
@@ -107,57 +119,19 @@
 /* 2 */
 /***/ function(module, exports) {
 
-	'use strict';
+	"use strict";
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-	var _matchOrNot = Symbol('matchOrNot');
-
-	var Lspi = function () {
-	  function Lspi() {
-	    _classCallCheck(this, Lspi);
+	var ScopedLspi = function () {
+	  function ScopedLspi() {
+	    _classCallCheck(this, ScopedLspi);
 	  }
 
-	  _createClass(Lspi, [{
-	    key: 'createEmptyRecordObject',
-	    value: function createEmptyRecordObject(recordName) {
-	      var check = this.getRecord(recordName);
-	      if (check) console.log('The record: "' + arg + '" already exists!');
-	      if (!check) localStorage.setItem(arg, JSON.stringify({}));
-	    }
-	  }, {
-	    key: 'createEmptyRecordObjects',
-	    value: function createEmptyRecordObjects() {
-	      var _this = this;
-
-	      Array.from(arguments).forEach(function (arg) {
-	        var check = _this.getRecord(arg);
-	        if (check) console.log('The record: "' + arg + '" already exists!');
-	        if (!check) localStorage.setItem(arg, JSON.stringify({}));
-	      });
-	    }
-	  }, {
-	    key: 'createEmptyRecordArray',
-	    value: function createEmptyRecordArray(recordName) {
-	      var check = this.getRecord(recordName);
-	      if (check) console.log('The record: "' + recordName + '" already exists!');
-	      if (!check) localStorage.setItem(recordName, JSON.stringify([]));
-	    }
-	  }, {
-	    key: 'createEmptyRecordArrays',
-	    value: function createEmptyRecordArrays() {
-	      var _this2 = this;
-
-	      Array.from(arguments).forEach(function (arg) {
-	        var check = _this2.getRecord(arg);
-	        if (check) console.log('The record: "' + arg + '" already exists!');
-	        if (!check) localStorage.setItem(arg, JSON.stringify([]));
-	      });
-	    }
-	  }, {
-	    key: 'setRecord',
+	  _createClass(ScopedLspi, [{
+	    key: "setRecord",
 	    value: function setRecord(recordName, data) {
 	      try {
 	        localStorage.setItem(recordName, JSON.stringify(data));
@@ -166,17 +140,17 @@
 	      }
 	    }
 	  }, {
-	    key: 'setRecords',
+	    key: "setRecords",
 	    value: function setRecords(args) {
-	      var _this3 = this;
+	      var _this = this;
 
 	      args.forEach(function (arg) {
-	        return _this3.setRecord(arg[0], arg[1]);
+	        return _this.setRecord(arg[0], arg[1]);
 	      });
 	    }
 	  }, {
-	    key: 'setStringRecord',
-	    value: function setStringRecord(recordName, string) {
+	    key: "setJSONRecord",
+	    value: function setJSONRecord(recordName, string) {
 	      try {
 	        localStorage.setItem(recordName, string);
 	      } catch (error) {
@@ -184,7 +158,7 @@
 	      }
 	    }
 	  }, {
-	    key: 'getRecord',
+	    key: "getRecord",
 	    value: function getRecord(recordName) {
 	      try {
 	        var obj = JSON.parse(localStorage.getItem(recordName));
@@ -194,111 +168,107 @@
 	      }
 	    }
 	  }, {
-	    key: 'getRecords',
+	    key: "getRecords",
 	    value: function getRecords() {
-	      var _this4 = this;
+	      var _this2 = this;
 
 	      return Array.from(arguments).map(function (arg) {
-	        return _this4.getRecord(arg);
+	        return _this2.getRecord(arg);
 	      });
 	    }
 	  }, {
-	    key: 'where',
+	    key: "where",
 	    value: function where(recordName, key, equals) {
-	      resultArr = [];
-	      this.getRecord(recordName).forEach(function (record) {
-	        if (record[key] === equals) {
-	          resultArr.push(record);
-	        }
-	      });
-	      if (!resultArr[0]) {
-	        return console.log('No records match k:\'' + key + '\' with v:"' + equals + '"');
-	      }
-	      return resultArr;
-	    }
-	  }, {
-	    key: 'whereEitherOr',
-	    value: function whereEitherOr(recordName, keys, value) {
-	      resultArr = [];
-	      this.getRecord(recordName).forEach(function (record) {
-	        if (record[key[0]] === equals || record[key[1]] === equals) {
-	          resultArr.push(record);
-	        }
-	      });
-	      if (!resultArr[0]) return this[_matchOrNot](key, equals);
-	      return resultArr;
-	    }
-	  }, {
-	    key: 'arrayWeakMatch',
-	    value: function arrayWeakMatch(recordName, query) {
-	      var record = this.getRecord(recordName);
 	      var result = [];
-	      record.forEach(function (el) {
-	        if (query.includes(el)) result.push(el);
-	      });
-	      if (!result[0]) return console.log('No weak matches for ' + query);
-	      return result;
-	    }
-	  }, {
-	    key: 'arrayStrongMatch',
-	    value: function arrayStrongMatch(recordName, query) {
 	      var record = this.getRecord(recordName);
-	      var result = [];
-	      record.forEach(function (el) {
-	        if (query === el) result.push(el);
-	      });
-	      if (!result[0]) return console.log('No strong matches for ' + query);
-	      return result;
-	    }
-	  }, {
-	    key: 'getStringRecord',
-	    value: function getStringRecord(recordName) {
-	      var str = localStorage.getItem(recordName);
-	      if (!str) return console.log('The "' + recordName + '" record does not exist!');
-	      return str;
-	    }
-	  }, {
-	    key: 'getStringRecords',
-	    value: function getStringRecords() {
-	      var _this5 = this;
 
-	      return Array.from(arguments).map(function (arg) {
-	        return _this5.getRecord(arg);
+	      if (!record) return record;
+
+	      record.forEach(function (obj) {
+	        obj[key] === equals && result.push(obj);
 	      });
+
+	      if (!result[0]) return false;
+	      return result;
 	    }
 	  }, {
-	    key: 'deleteRecord',
+	    key: "getJSONRecord",
+	    value: function getJSONRecord(recordName) {
+	      try {
+	        var json = localStorage.getItem(recordName);
+	        return json;
+	      } catch (error) {
+	        return false;
+	      }
+	    }
+	  }, {
+	    key: "whereEitherOr",
+	    value: function whereEitherOr(recordName, keys, value) {
+	      var result = [];
+	      var record = this.getRecord(recordName);
+
+	      if (!record) return false;
+
+	      record.forEach(function (obj) {
+	        obj[key[0]] === equals || obj[key[1]] === equals && result.push(obj);
+	      });
+
+	      if (!result[0]) return false;
+	      return result;
+	    }
+	  }, {
+	    key: "arrayWeakMatch",
+	    value: function arrayWeakMatch(recordName, query) {
+	      var result = [];
+	      var record = this.getRecord(recordName);
+
+	      if (!record) return false;
+
+	      record.forEach(function (el) {
+	        query.includes(el) && result.push(el);
+	      });
+
+	      if (!result[0]) return false;
+	      return result;
+	    }
+	  }, {
+	    key: "arrayStrongMatch",
+	    value: function arrayStrongMatch(recordName, query) {
+	      var result = [];
+	      var record = this.getRecord(recordName);
+
+	      record.forEach(function (el) {
+	        query === el && result.push(el);
+	      });
+
+	      if (!result[0]) return false;
+	      return result;
+	    }
+	  }, {
+	    key: "deleteRecord",
 	    value: function deleteRecord(recordName) {
 	      localStorage.removeItem(recordName);
 	    }
 	  }, {
-	    key: 'deleteRecords',
+	    key: "deleteRecords",
 	    value: function deleteRecords() {
-	      var _this6 = this;
+	      var _this3 = this;
 
 	      Array.from(arguments).forEach(function (arg) {
-	        return _this6.deleteRecord(arg);
+	        return _this3.deleteRecord(arg);
 	      });
 	    }
 	  }, {
-	    key: 'dropAll',
+	    key: "dropAll",
 	    value: function dropAll() {
 	      localStorage.clear();
 	    }
-
-	    // ** private
-
-	  }, {
-	    key: _matchOrNot,
-	    value: function value(key, equals) {
-	      return console.log('No records match k:\'' + key + '\' with v:"' + equals + '"');
-	    }
 	  }]);
 
-	  return Lspi;
+	  return ScopedLspi;
 	}();
 
-	module.exports = Lspi;
+	module.exports = ScopedLspi;
 
 /***/ },
 /* 3 */
@@ -602,15 +572,121 @@
 	var assert = chai.assert;
 	var LspiFlux = __webpack_require__(1);
 
-	describe('lspi as db for store', function () {
+	describe('scoped lspi as state manager for lspi-flux', function () {
 	  var _this = this;
 
-	  beforeEach(function () {
-	    _this.store = new LspiFlux();
+	  it('should load default state correctly', function () {
+	    _this.scopedStore = new LspiFlux();
+
+	    assert.equal(_this.scopedStore.storeName, 'lspi-flux');
+
+	    assert.deepEqual(_this.scopedStore.setState({}).state, {});
+	    assert.deepEqual(_this.scopedStore.setState({}).status, true);
+
+	    assert.deepEqual(_this.scopedStore.mainStore, {});
+
+	    assert.deepEqual(_this.scopedStore.fetchState.state, {});
+	    assert.deepEqual(_this.scopedStore.fetchState.status, true);
 	  });
 
-	  it('should load correctly', function () {
-	    assert.deepEqual(_this.store.mainStore, {});
+	  it('should have truthy status returns', function () {
+	    _this.scopedStore = new LspiFlux();
+
+	    assert.deepEqual(_this.scopedStore.setState({}).status, true);
+	    assert.deepEqual(_this.scopedStore.fetchState.status, true);
+	  });
+
+	  it('should be able to store valid Object Literals', function () {
+	    _this.scopedStore = new LspiFlux({ "ok": "wow" });
+
+	    assert.deepEqual(_this.scopedStore.mainStore, { "ok": "wow" });
+	  });
+
+	  it('feels fairly natural to use the API', function () {
+	    _this.scopedStore = new LspiFlux({ "ok": "wow" });
+
+	    assert.deepEqual(_this.scopedStore.mainStore, { "ok": "wow" });
+
+	    var appState = { main: {} };
+	    var currentState = _this.scopedStore.fetchState;
+
+	    if (currentState.status) appState.main = currentState.state;
+
+	    /* for the next if (line 49) */
+	    /* handle error and pick to either modify state with old state or keep it as is */
+	    /* example below on how to reset state to old state provided by the API if you want to */
+	    /* up to you! */
+
+	    if (!currentState.status) {
+	      console.error("Please try again. Something went wrong!");
+	      appState.main = currentState.state;
+	    }
+
+	    assert.deepEqual(appState, { main: { "ok": "wow" } });
+	  });
+
+	  it('feels fairly natural to handle an error and maintain previous state', function () {
+	    _this.scopedStore = new LspiFlux({ before: "failure" });
+
+	    assert.deepEqual(_this.scopedStore.mainStore, { before: "failure" });
+
+	    var currentState = _this.scopedStore.fetchState.state;
+	    var appState = { main: currentState };
+
+	    assert.deepEqual(appState, { main: { before: "failure" } });
+
+	    _this.scopedStore.setState({ trying: "new change" });
+
+	    /* this will pretend to be the false state response from the API */
+	    currentState.status = false;
+	    currentState.state = { before: "failure" };
+	    /* this is jut mocking a response */
+
+	    // ************************************************************** //
+	    // **** This block will mock how a dev should handle the API **** //
+
+	    /* this will not pass - the next `if` is going to be truthy */
+	    if (currentState.status) appState.main = currentState.state;
+
+	    /* handle error and reset state to previous state given by the api */
+	    var handleErrorAndResetState = function handleErrorAndResetState() {
+	      console.error("TEST MOCK RESPONSE: Please try again. Something went wrong!");
+	      /* you could throw an alert, or pop up a modal here for a better user experience */
+	      /* using console.log for testing purposes only */
+	      appState.main = currentState.state;
+	    };
+
+	    /* call handle error function since this `if` statement will pass */
+	    if (!currentState.status) handleErrorAndResetState();
+
+	    // **** End of mock block **** //
+	    // *************************** //
+
+	    assert.deepEqual(appState, { main: { before: "failure" } });
+	  });
+
+	  it('can make multiple stores', function () {
+	    _this.ideaStore = new LspiFlux({ "ok": "wow" }, 'ideas');
+	    _this.thoughtStore = new LspiFlux({ "wow": "ok" }, 'thoughts');
+
+	    assert.equal(_this.ideaStore.storeName, 'ideas');
+	    assert.equal(_this.thoughtStore.storeName, 'thoughts');
+	  });
+
+	  it('should find matches on a where statement', function () {
+	    var ideas = new LspiFlux({}, 'ideas');
+
+	    ideas.setState([{ wow: "ok" }, { wow: "ok" }, { wow: "nope" }]);
+
+	    var okResult = ideas.whereState('wow', 'ok');
+	    var okMatch = okResult.match;
+
+	    assert.deepEqual(okMatch, [{ wow: "ok" }, { wow: "ok" }]);
+
+	    var nopeResult = ideas.whereState('wow', 'nope');
+	    var nopeMatch = nopeResult.match;
+
+	    assert.deepEqual(nopeMatch, [{ wow: "nope" }]);
 	  });
 	});
 
